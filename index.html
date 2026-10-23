@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#173f35">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="portuguese-commute" content="offline-study">
+  <meta name="description" content="Brazilian Portuguese audio, reading, and writing together in one offline study workspace.">
+  <title>Português no caminho · Commute practice</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="offline.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#practice">Skip to practice</a>
+  <header class="site-header">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">p.</span><span>português <em>no caminho</em></span></div>
+    <div class="header-tools"><span id="connection-status" class="connection"><span class="status-dot" aria-hidden="true"></span>Checking connection</span><button type="button" id="about-toggle" class="button button-plain" aria-haspopup="dialog">About & backups</button></div>
+  </header>
+  <section class="course-bar" aria-label="Lesson and downloads">
+    <div class="lesson-picker"><label class="eyebrow" for="lesson-select">Your lesson</label><select id="lesson-select" disabled><option>Loading the course…</option></select></div>
+    <div class="commute-plan"><div class="duration-choices" role="group" aria-label="Commute length"><button type="button" data-minutes="10" aria-pressed="false">10 min</button><button type="button" data-minutes="20" aria-pressed="true">20 min</button><button type="button" data-minutes="30" aria-pressed="false">30 min</button></div><p id="session-plan" class="session-plan">12 min listen · 4 min read · 4 min write</p></div>
+    <div class="download-area"><button type="button" id="download-lesson" class="button button-primary" disabled><span aria-hidden="true">↓</span> Download for the ride</button><p id="download-status" class="small muted" role="status" aria-live="polite">Checking saved files…</p></div>
+  </section>
+  <main>
+    <div id="load-error" class="notice" role="alert" hidden></div>
+    <section id="practice" class="practice-grid" aria-labelledby="lesson-title">
+      <section class="listening-panel" aria-label="Listen and write">
+        <div class="pane-heading"><div class="section-heading"><div><p id="lesson-number" class="eyebrow">Listen in small pieces</p><h1 id="lesson-title">Your first stop</h1></div><span id="review-count" class="pill">0 checked</span></div><p id="lesson-description" class="muted"></p></div>
+        <div class="study-tabs" role="tablist" aria-label="Study activity"><button type="button" id="listen-tab" role="tab" aria-selected="true" aria-controls="listen-view">Listen & read</button><button type="button" id="write-tab" role="tab" aria-selected="false" aria-controls="write-view" tabindex="-1">Write & keep</button></div>
+        <section id="listen-view" class="study-view" role="tabpanel" aria-labelledby="listen-tab">
+          <div id="track-picker-wrap" class="track-picker"><label class="visually-hidden" for="track-select">Audio track</label><select id="track-select" disabled><option>Loading…</option></select></div>
+          <div id="alignment-note" class="alignment-note">Read alongside the original audio.</div>
+          <button type="button" id="transcript-toggle" class="text-button transcript-toggle" aria-pressed="false">Hide Portuguese · listen first</button>
+          <div id="clip-list" class="clip-list" aria-label="Short audio excerpts"></div>
+        </section>
+        <section id="write-view" class="study-view writing-panel" role="tabpanel" aria-labelledby="write-tab" hidden>
+          <div class="writing-header"><label for="lesson-notes"><span class="eyebrow">Your notebook</span><h2 id="writing-title">A few words to keep</h2></label><span id="notes-status" class="small muted" role="status">Saved on this device</span></div>
+          <textarea id="lesson-notes" placeholder="A phrase, a question, a sentence of your own…" rows="4" spellcheck="true" lang="pt-BR"></textarea>
+          <p class="small muted notes-hint">Keep the book beside you. Your writing saves here as you go.</p>
+          <h2 class="exercise-heading">Try it in writing</h2>
+          <div id="writing-exercises" class="writing-exercises" aria-label="Short writing exercises"></div>
+          <details class="writing-prompts"><summary>More ideas for this ride</summary><ol id="prompts"></ol></details>
+          <p class="small muted notes-hint">Your notes stay on this device. Export a backup under About & backups.</p>
+        </section>
+      </section>
+      <aside class="reading-panel" aria-label="Read the original lesson">
+        <div class="reading-heading"><div><p class="eyebrow">Alongside your practice</p><h2>The original pages</h2></div><span class="reading-label">Read</span></div>
+        <div class="page-controls"><button type="button" id="page-prev" class="icon-button" aria-label="Previous book page">←</button><label class="visually-hidden" for="page-select">Book page</label><select id="page-select"><option>Loading…</option></select><button type="button" id="page-next" class="icon-button" aria-label="Next book page">→</button><label class="visually-hidden" for="page-zoom">Book page zoom</label><select id="page-zoom" aria-label="Book page zoom"><option value="1">Fit width</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select></div>
+        <p id="page-caption" class="small muted">Zoom and scroll the page here.</p>
+        <div id="page-scroll" class="page-scroll" tabindex="0" aria-label="Scrollable book page"><div id="page-open" class="page-frame"><img id="book-page" alt="Original lesson page" decoding="async"></div></div>
+      </aside>
+    </section>
+  </main>
+  <section class="player-bar" aria-label="Audio player">
+    <div class="player-main"><button type="button" id="player-toggle" class="player-play" aria-label="Play selected excerpt" disabled>▶</button><div class="player-info"><strong id="player-title">Tap a line to listen</strong><div class="player-timeline"><progress id="player-progress" max="1" value="0" aria-label="Excerpt playback progress"></progress><span id="player-time">0:00 / 0:00</span></div></div><button type="button" id="replay" class="icon-button" aria-label="Replay selected excerpt" title="Replay" disabled>↺</button><button type="button" id="loop-toggle" class="icon-button loop-button" aria-pressed="false" aria-label="Loop selected excerpt" title="Loop excerpt" disabled>⇄<span>Loop</span></button><label class="speed-control"><span class="visually-hidden">Playback speed</span><select id="playback-speed" aria-label="Playback speed"><option value="0.75">0.75×</option><option value="0.9">0.9×</option><option value="1" selected>1×</option><option value="1.15">1.15×</option></select></label></div>
+    <details id="excerpt-editor" class="excerpt-editor"><summary>Make a smaller excerpt <span aria-hidden="true">＋</span></summary><div class="excerpt-fields"><label>Start <input id="excerpt-start" type="text" inputmode="decimal" placeholder="0:00" aria-describedby="excerpt-hint"></label><label>End <input id="excerpt-end" type="text" inputmode="decimal" placeholder="0:10" aria-describedby="excerpt-hint"></label><button type="button" id="set-start" class="button button-secondary" disabled>Start here</button><button type="button" id="set-end" class="button button-secondary" disabled>End here</button><button type="button" id="save-excerpt" class="button button-primary" disabled>Save excerpt</button></div><p id="excerpt-hint" class="small muted">Choose a line first. Use minutes:seconds, or seconds.</p><p id="excerpt-status" class="small" role="status"></p></details>
+    <p id="audio-status" class="audio-status" role="status" aria-live="polite"></p>
+  </section>
+  <dialog id="about-dialog" aria-labelledby="about-title">
+    <div class="dialog-heading"><h2 id="about-title">Your study space</h2><button type="button" id="about-close" class="button button-secondary">Close</button></div>
+    <footer class="footer"><div><p>FSI Brazilian Portuguese FAST · Volume 1</p><p class="small muted">This older course includes formal and dated situations. Use it for listening and language practice; ask your friend about current everyday phrasing.</p><p id="course-attribution" class="small muted"></p><p class="small muted"><a id="source-link" class="credit-link" href="https://www.livelingua.com/course/fsi/brazilian-portuguese-fast-(volume-1)" target="_blank" rel="noopener">Original course ↗</a><br>Image credits: <a class="credit-link" href="pages/326.webp" target="_blank" rel="noopener">appendix page 1 ↗</a> · <a class="credit-link" href="pages/327.webp" target="_blank" rel="noopener">appendix page 2 ↗</a></p></div><div class="backup-actions"><button type="button" id="export-notes" class="button button-secondary">Export notes & progress</button><label class="button button-plain" for="import-notes">Import backup<input id="import-notes" type="file" accept="application/json,.json" hidden></label><button type="button" id="remove-download" class="text-button" hidden>Remove this lesson’s download</button><span id="backup-status" class="small muted" role="status"></span></div></footer>
+  </dialog>
+  <audio id="lesson-audio" preload="none" playsinline></audio>
+</body>
+</html>
